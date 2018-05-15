@@ -17,7 +17,7 @@ import javax.swing.event.ListSelectionListener;
 public class CommandList extends JPanel {
 	private JButton b1;
 	private JTable tb1;
-	//private JTable tb2;
+	// private JTable tb2;
 	private String FirstName = " ";
 	private String LastName = " ";
 	private int idd = 0;
@@ -36,9 +36,10 @@ public class CommandList extends JPanel {
 	private ArrayList<String> ppret = new ArrayList<String>();
 	private ArrayList<String> pcantitate = new ArrayList<String>();
 	private String comrows[][];
-	//private String comrows2[][];
+	// private String comrows2[][];
 	private int howmanyrowsincommand = 0;
-	
+	private int sum = 0;
+	private String another[];
 
 	public CommandList(String FirstName, String LastName, int id) {
 		setLayout(null);
@@ -49,33 +50,31 @@ public class CommandList extends JPanel {
 		idd = id;
 		dark();
 		String columns[] = { "Dataincarecomandatrebuiesafiegata", "TotalCost", "idComanda" };
-		String columns1[] = { "Numele Produsului", "Pret","Cantitate" };
+		String columns1[] = { "Numele Produsului", "Pret", "Cantitate" };
 
 		tb1 = new JTable(comrows, columns);
 		tb1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
+
 		somethingpanel = new JScrollPane(tb1);
-		
 
 		somethingpanel.setBounds(0, 0, 500, 343);
-	
-		
-	
+
 		add(somethingpanel);
-	
+		another=new String[100];
 		tb1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
 
-				 System.out.println(tb1.getValueAt(tb1.getSelectedRow(), 2).toString());
-				
-				PreparedStatement stt2;
+				int cc=0;
+			
+System.out.println(another);
+another[cc]=tb1.getValueAt(tb1.getSelectedRow(), 2).toString();
 				try {
 					pdnume.clear();
 					ppret.clear();
 					pcantitate.clear();
-			int	howmanyrowsincommand2=0;
-					stt2 = con.prepareStatement("select * from produsu where Comanda_idComanda=?");
-					stt2.setString(1, (tb1.getValueAt(tb1.getSelectedRow(), 2).toString()));
+					int howmanyrowsincommand2 = 0;
+					PreparedStatement stt2 = con.prepareStatement("select * from produsu where Comanda_idComanda=?");
+					stt2.setString(1,another[cc]);
 					ResultSet rrr2 = stt2.executeQuery();
 					while (rrr2.next()) {
 
@@ -84,8 +83,11 @@ public class CommandList extends JPanel {
 						pcantitate.add(rrr2.getString("Cantitate"));
 						howmanyrowsincommand2++;
 					}
-					String comrows2[][]= new String[howmanyrowsincommand2][3];
-				
+cc++;
+					stt2.close();
+					rrr2.close();
+					String comrows2[][] = new String[howmanyrowsincommand2][3];
+
 					for (int i = 0; i < howmanyrowsincommand2; i++) {
 						for (int j = 0; j <= 2; j++) {
 							if (j == 0) {
@@ -102,21 +104,21 @@ public class CommandList extends JPanel {
 
 						}
 					}
-				
-					
-				for(int i=0;i<=howmanyrowsincommand2;i++) {
-					for (int j = 0; j <= 2; j++)
-					{
+
+					sum = sum + howmanyrowsincommand2;
+
+					if (sum == 2 * howmanyrowsincommand2) {
+
+						sum = 0;
+						String columns1[] = { "Numele Produsului", "Pret", "Cantitate" };
+						tb1 = new JTable(comrows2, columns1);
+
+						somethingpanel2 = new JScrollPane(tb1);
+						somethingpanel2.setBounds(600, 0, 600, 600);
+						add(somethingpanel2);
 						
-						
-						System.out.println(comrows2[i][j]);
 					}
-					
-					
-					
-					
-					
-				}
+
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -124,8 +126,8 @@ public class CommandList extends JPanel {
 
 			}
 		});
-		tb1.getColumnModel().getColumn(2).setMinWidth(0);
-		tb1.getColumnModel().getColumn(2).setMaxWidth(0);
+		tb1.getColumnModel().getColumn(2).setMinWidth(100);
+		tb1.getColumnModel().getColumn(2).setMaxWidth(100);
 		b1 = new JButton("remove comand");
 		b1.setBounds(400, 400, 100, 100);
 		b1.addActionListener(e -> {
