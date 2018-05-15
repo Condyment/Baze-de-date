@@ -17,7 +17,7 @@ import javax.swing.event.ListSelectionListener;
 public class CommandList extends JPanel {
 	private JButton b1;
 	private JTable tb1;
-	// private JTable tb2;
+   private JTable tb2;
 	private String FirstName = " ";
 	private String LastName = " ";
 	private int idd = 0;
@@ -39,7 +39,7 @@ public class CommandList extends JPanel {
 	// private String comrows2[][];
 	private int howmanyrowsincommand = 0;
 	private int sum = 0;
-	private String another[];
+	String another;
 
 	public CommandList(String FirstName, String LastName, int id) {
 		setLayout(null);
@@ -60,21 +60,23 @@ public class CommandList extends JPanel {
 		somethingpanel.setBounds(0, 0, 500, 343);
 
 		add(somethingpanel);
-		another=new String[100];
+	
 		tb1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
 
-				int cc=0;
+				
 			
+
+another=tb1.getValueAt(tb1.getSelectedRow(), 2).toString();
 System.out.println(another);
-another[cc]=tb1.getValueAt(tb1.getSelectedRow(), 2).toString();
+
 				try {
 					pdnume.clear();
 					ppret.clear();
 					pcantitate.clear();
 					int howmanyrowsincommand2 = 0;
 					PreparedStatement stt2 = con.prepareStatement("select * from produsu where Comanda_idComanda=?");
-					stt2.setString(1,another[cc]);
+					stt2.setString(1,another);
 					ResultSet rrr2 = stt2.executeQuery();
 					while (rrr2.next()) {
 
@@ -83,7 +85,7 @@ another[cc]=tb1.getValueAt(tb1.getSelectedRow(), 2).toString();
 						pcantitate.add(rrr2.getString("Cantitate"));
 						howmanyrowsincommand2++;
 					}
-cc++;
+
 					stt2.close();
 					rrr2.close();
 					String comrows2[][] = new String[howmanyrowsincommand2][3];
@@ -111,12 +113,12 @@ cc++;
 
 						sum = 0;
 						String columns1[] = { "Numele Produsului", "Pret", "Cantitate" };
-						tb1 = new JTable(comrows2, columns1);
+						tb2 = new JTable(comrows2, columns1);
 
-						somethingpanel2 = new JScrollPane(tb1);
+						somethingpanel2 = new JScrollPane(tb2);
 						somethingpanel2.setBounds(600, 0, 600, 600);
 						add(somethingpanel2);
-						
+						repaint();
 					}
 
 				} catch (SQLException e) {
@@ -126,8 +128,8 @@ cc++;
 
 			}
 		});
-		tb1.getColumnModel().getColumn(2).setMinWidth(100);
-		tb1.getColumnModel().getColumn(2).setMaxWidth(100);
+		tb1.getColumnModel().getColumn(2).setMinWidth(0);
+		tb1.getColumnModel().getColumn(2).setMaxWidth(0);
 		b1 = new JButton("remove comand");
 		b1.setBounds(400, 400, 100, 100);
 		b1.addActionListener(e -> {
