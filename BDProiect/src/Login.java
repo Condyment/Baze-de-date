@@ -347,7 +347,7 @@ public class Login extends JFrame {
 			
 			list = new CommandList(FirstName,LastName,id);
 			list.add(next);
-			list.setBounds(0, 0, 500, 500);
+			list.setBounds(0, 0, 1200, 700);
 			add(list);
 			 gettingtherows();
 			remove(TheLogin);

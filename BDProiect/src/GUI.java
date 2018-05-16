@@ -305,8 +305,8 @@ public class GUI extends JPanel {
 	public void add_image() {
 
 		try {
-			background1 = ImageIO.read(new File("C:\\Users\\Marton\\eclipse-workspace\\BDProiect\\back.jpg"));
-			background2 = ImageIO.read(new File("C:\\Users\\Marton\\eclipse-workspace\\BDProiect\\cooler1.png"));
+			background1 = ImageIO.read(new File("C:\\Users\\Marton\\git\\wak\\BDProiect\\back.jpg"));
+			background2 = ImageIO.read(new File("C:\\Users\\Marton\\git\\wak\\BDProiect\\cooler1.png"));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
