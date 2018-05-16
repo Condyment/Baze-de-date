@@ -40,7 +40,7 @@ public class CommandList extends JPanel {
 	private int howmanyrowsincommand = 0;
 	private int sum = 0;
 	String another;
-
+private int ddd=0;
 	public CommandList(String FirstName, String LastName, int id) {
 		setLayout(null);
 		connection();
@@ -60,71 +60,74 @@ public class CommandList extends JPanel {
 		somethingpanel.setBounds(0, 0, 500, 343);
 
 		add(somethingpanel);
-	
+		
+		
 		tb1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			
 			public void valueChanged(ListSelectionEvent event) {
+				if(!event.getValueIsAdjusting()){
+					
+					if(ddd==12)
+					{
+						remove(somethingpanel2);
+						
+					}
+				  another=tb1.getValueAt(tb1.getSelectedRow(), 2).toString();
+				System.out.println(another);
+
+					try {
+						pdnume.clear();
+						ppret.clear();
+						pcantitate.clear();
+						int howmanyrowsincommand2 = 0;
+						PreparedStatement stt2 = con.prepareStatement("select * from produsu where Comanda_idComanda=?");
+						stt2.setString(1,another);
+						ResultSet rrr2 = stt2.executeQuery();
+						while (rrr2.next()) {
+
+							pdnume.add(rrr2.getString("Produsu_nume"));
+							ppret.add(rrr2.getString("Pret"));
+							pcantitate.add(rrr2.getString("Cantitate"));
+							howmanyrowsincommand2++;
+						}
+
+						stt2.close();
+						rrr2.close();
+						String comrows2[][] = new String[howmanyrowsincommand2][3];
+
+						for (int i = 0; i < howmanyrowsincommand2; i++) {
+							for (int j = 0; j <= 2; j++) {
+								if (j == 0) {
+									comrows2[i][j] = pdnume.get(i);
+
+								} else if (j == 1) {
+									comrows2[i][j] = ppret.get(i);
+
+								} else if (j == 2) {
+
+									comrows2[i][j] = pcantitate.get(i);
 
 				
-			
+						}}}
 
-another=tb1.getValueAt(tb1.getSelectedRow(), 2).toString();
-System.out.println(another);
+						tb2=new JTable(comrows2,columns1);
+						somethingpanel2=new JScrollPane(tb2);
 
-				try {
-					pdnume.clear();
-					ppret.clear();
-					pcantitate.clear();
-					int howmanyrowsincommand2 = 0;
-					PreparedStatement stt2 = con.prepareStatement("select * from produsu where Comanda_idComanda=?");
-					stt2.setString(1,another);
-					ResultSet rrr2 = stt2.executeQuery();
-					while (rrr2.next()) {
-
-						pdnume.add(rrr2.getString("Produsu_nume"));
-						ppret.add(rrr2.getString("Pret"));
-						pcantitate.add(rrr2.getString("Cantitate"));
-						howmanyrowsincommand2++;
-					}
-
-					stt2.close();
-					rrr2.close();
-					String comrows2[][] = new String[howmanyrowsincommand2][3];
-
-					for (int i = 0; i < howmanyrowsincommand2; i++) {
-						for (int j = 0; j <= 2; j++) {
-							if (j == 0) {
-								comrows2[i][j] = pdnume.get(i);
-
-							} else if (j == 1) {
-								comrows2[i][j] = ppret.get(i);
-
-							} else if (j == 2) {
-
-								comrows2[i][j] = pcantitate.get(i);
-
-							}
-
-						}
-					}
-
-					sum = sum + howmanyrowsincommand2;
-
-					if (sum == 2 * howmanyrowsincommand2) {
-
-						sum = 0;
-						String columns1[] = { "Numele Produsului", "Pret", "Cantitate" };
-						tb2 = new JTable(comrows2, columns1);
-
-						somethingpanel2 = new JScrollPane(tb2);
-						somethingpanel2.setBounds(600, 0, 600, 600);
+						somethingpanel2.setBounds(600, 0, 500, 343);
 						add(somethingpanel2);
 						repaint();
+						ddd=12;
+						
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+			
+		
+
+
+
 
 			}
 		});
