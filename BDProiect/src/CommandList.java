@@ -136,9 +136,10 @@ private int ddd=0;
 		b1 = new JButton("remove comand");
 		b1.setBounds(400, 400, 100, 100);
 		b1.addActionListener(e -> {
-
+			
+		System.out.println(tb1.getValueAt(tb1.getSelectedRow(), 2).toString());	
 			// idkwhatthisgonabe();
-			System.out.println(tb1.getSelectedRow());
+			//System.out.println(tb1.getSelectedRow());
 		});
 		add(b1);
 		setSize(1200, 600);
