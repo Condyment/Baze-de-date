@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,8 +11,12 @@ import java.util.Random;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 public class AddCommand extends JPanel {
 
@@ -47,18 +53,54 @@ public class AddCommand extends JPanel {
 	private int idcomanda = 1;
 	private double total = 0;
 	private int ki = 0;
-
+	private JLabel Luna;
+	private JLabel Ziua;
+	private JLabel Ora;
+	private JLabel Minutu;
+	private int gggg=0;
 	public AddCommand(String FirstName, String LastName, int id) {
 		setLayout(null);
 		this.FirstName = FirstName;
 		this.LastName = LastName;
 		this.id = id;
-		btn1 = new JButton("something");
-		btn1.setBounds(500, 500, 100, 100);
+		Luna = new JLabel("Luna");
+		Ziua = new JLabel("Ziua");
+		Ora = new JLabel("Ora");
+		Minutu = new JLabel("Minutu");
+		Luna.setBounds(0, 0, 40, 20);
+		Ziua.setBounds(100, 0, 40, 20);
+		Ora.setBounds(200, 0, 40, 20);
+		Minutu.setBounds(300, 0, 40, 20);
+		add(Luna);
+		add(Ziua);
+		add(Ora);
+		add(Minutu);
+		btn1 = new JButton("<html><center>Send the<br> command </center></html>");
+		Font bItalic = new Font("Consolas", Font.BOLD, 15);
+		btn1.setFont(bItalic);
+		btn1.setBounds(85, 125, 100, 75);
+		
 		btn1.addActionListener(e -> {
-			
+			try {
+				
+				list1.getModel().getElementAt(list1.getSelectedIndex()).toString();
+				list2.getModel().getElementAt(list2.getSelectedIndex()).toString(); 
+				list3.getModel().getElementAt(list3.getSelectedIndex()).toString(); 
+				list4.getModel().getElementAt(list4.getSelectedIndex()).toString(); 
+				gggg=0;
+			}
+			catch(Exception eti) {
+				gggg=1;
+			}
+			if(gggg==0) {
+		
 			themostimportantfunction();
-			btn1.setEnabled(false);
+			btn1.setEnabled(false);}
+			else {
+				JFrame f = new JFrame();
+				JOptionPane.showMessageDialog(f, "Please Select every date( Luna,Ziua,Ora,Minutu)");
+				
+			}
 		});
 		add(btn1);
 		date1 = new Date();
@@ -76,7 +118,7 @@ public class AddCommand extends JPanel {
 			Luna.addElement("" + i);
 		}
 		DefaultListModel<String> Ziua = new DefaultListModel<>();
-		for (int i = day; i <= array[month] - 1; i++) {
+		for (int i = day; i <= array[month]; i++) {
 			Ziua.addElement("" + i);
 		}
 		DefaultListModel<String> Ora = new DefaultListModel<>();
@@ -113,16 +155,19 @@ public class AddCommand extends JPanel {
 			}
 
 		}
+		JScrollPane scrollPane1 = new JScrollPane();
 
 		list1 = new JList<>(Luna);
+		scrollPane1.setViewportView(list1);
 
-		list1.setBounds(0, 0, 75, 350);
+		list1.setBounds(0, 0, 75, 200);
+		scrollPane1.setBounds(0, 20, 75, 100);
 		list1.addListSelectionListener(e -> {
 
 			if (list1.getSelectedIndex() == 0) {
 				Ziua.removeAllElements();
 
-				for (int i = day; i <= array[month] - 1; i++) {
+				for (int i = day; i <= array[month]; i++) {
 					Ziua.addElement("" + i);
 				}
 			} else if (list1.getSelectedIndex() > 0) {
@@ -145,8 +190,11 @@ public class AddCommand extends JPanel {
 			}
 
 		});
+		JScrollPane scrollPane2 = new JScrollPane();
 		list2 = new JList<>(Ziua);
-		list2.setBounds(100, 0, 75, 600);
+		list2.setBounds(0, 0, 75, 200);
+		scrollPane2.setViewportView(list2);
+		scrollPane2.setBounds(100, 20, 75, 100);
 		list2.addListSelectionListener(e -> {
 			if (list1.getSelectedIndex() == 0 && list2.getSelectedIndex() == 0) {
 				Ora.removeAllElements();
@@ -184,7 +232,10 @@ public class AddCommand extends JPanel {
 
 			}
 		});
+		JScrollPane scrollPane3 = new JScrollPane();
 		list3 = new JList<>(Ora);
+		list3.setBounds(0, 0, 75, 200);
+		scrollPane3.setViewportView(list3);
 		list3.addListSelectionListener(e -> {
 			if ((list1.getSelectedIndex() == 0) && (list2.getSelectedIndex() == 0) && (list3.getSelectedIndex() == 0)) {
 				Minutul.removeAllElements();
@@ -212,13 +263,21 @@ public class AddCommand extends JPanel {
 			}
 
 		});
-		list3.setBounds(200, 0, 75, 350);
+
+		scrollPane3.setBounds(200, 20, 75, 100);
+
+		JScrollPane scrollPane4 = new JScrollPane();
 		list4 = new JList<>(Minutul);
-		list4.setBounds(300, 0, 75, 350);
-		add(list1);
-		add(list2);
-		add(list3);
-		add(list4);
+
+		scrollPane4.setViewportView(list4);
+		list4.setBounds(0, 0, 75, 200);
+		scrollPane4.setBounds(300, 20, 75, 100);
+
+		add(scrollPane1);
+		add(scrollPane2);
+		add(scrollPane3);
+		add(scrollPane4);
+		setBackground(Color.WHITE);
 
 	}
 
@@ -274,13 +333,15 @@ public class AddCommand extends JPanel {
 		int hours1 = Integer.parseInt(noimagination[0]);
 		int minutes1 = Integer.parseInt(noimagination[1]);
 		Random rand = new Random();
-		int seconds = rand.nextInt(59);
+		int seconds = 0;
 		String data11 = years1 + "-" + monthcomand + "-" + days1 + " " + hours1 + ":" + minutes1 + ":" + seconds;
-
-		String mmmo = list1.getModel().getElementAt(list1.getSelectedIndex()).toString();
-		String dddy = list2.getModel().getElementAt(list2.getSelectedIndex()).toString();
-		String hhhho = list3.getModel().getElementAt(list3.getSelectedIndex()).toString();
-		String minnn = list4.getModel().getElementAt(list4.getSelectedIndex()).toString();
+		
+		 String mmmo = list1.getModel().getElementAt(list1.getSelectedIndex()).toString();
+		 String dddy = list2.getModel().getElementAt(list2.getSelectedIndex()).toString();
+		 String hhhho = list3.getModel().getElementAt(list3.getSelectedIndex()).toString();
+		 String minnn = list4.getModel().getElementAt(list4.getSelectedIndex()).toString();
+	
+		
 		String data22 = year + "-" + mmmo + "-" + dddy + " " + hhhho + ":" + minnn + ":" + seconds;
 
 		try {
@@ -315,7 +376,8 @@ public class AddCommand extends JPanel {
 				SS1.executeUpdate();
 
 			}
-
+			stt.close();
+			rr11.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -340,10 +402,11 @@ public class AddCommand extends JPanel {
 			month = 3;
 		} else if (manymonths[1].equals("Apr")) {
 
-			month = 4;
+			month = 5;
 		} else if (manymonths[1].equals("May")) {
 
 			month = 5;
+
 		} else if (manymonths[1].equals("Jun")) {
 
 			month = 6;

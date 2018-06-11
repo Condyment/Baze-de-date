@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,12 +11,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class Login extends JFrame {
 	// class composition
 	private GUI g;
 	private CommandList list;
+	
 	// jpanels
 	private JPanel CreareAccPanel;
 	private JPanel TheLogin;
@@ -31,7 +34,8 @@ public class Login extends JFrame {
 	// JTextField
 	// for login
 	private JTextField forName;
-	private JTextField forPassword;
+	//private JTextField forPassword;
+	private JPasswordField forPassword;
 	// for create
 	private JTextField FName;
 	private JTextField LName;
@@ -61,33 +65,43 @@ public class Login extends JFrame {
 	private Connection con;
 
 	public Login() {
+		super("Papa repede și bun");
 		setLayout(null);
-		// Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		// setLocationRelativeTo(null);
-		// Login panel
 		theconection();
+		Font  b = new Font("Consolas", Font.BOLD, 14);
+		
 		TheLogin = new JPanel();
 		TheLogin.setLayout(null);
+		TheLogin.setBackground(Color.white);
 		// Create Panel
 		CreareAccPanel = new JPanel();
 		CreareAccPanel.setLayout(null);
 		// Login panel
-		createee = new JButton("createe");
+		createee = new JButton("Create");
+		createee.setFont(b);
 		createee.setBounds(100, 100, 100, 100);
 
 		// GUI panel
-		backtologinscreen = new JButton("Back to the pas");
+		backtologinscreen = new JButton("<html><center>Exit from<br>the account</center></html>");
 		// Login panel buttons
 		Login = new JButton("Login");
+		Login.setFont(b);
 		Login.setBounds(100, 300, 100, 50);
-		Create = new JButton("Create Account");
+		Create = new JButton("<html><center>Create Account</center></html>");
+		Create.setFont(b);
 		Create.setBounds(300, 300, 100, 50);
 		Exit = new JButton("Exit");
+		Exit.setFont(b);
 		Exit.setBounds(200, 400, 100, 50);
+		Exit.addActionListener(e->{
+			System.exit(0);
+			
+		});
 		// Login panel textfild
 		forName = new JTextField();
 		forName.setBounds(150, 100, 200, 40);
-		forPassword = new JTextField();
+		forPassword = new JPasswordField();
+		
 		forPassword.setBounds(150, 200, 200, 40);
 		// Login panel labels
 		n = new JLabel("Username");
@@ -106,8 +120,10 @@ public class Login extends JFrame {
 
 		// Create Panel buttons
 		createee = new JButton("Create");
+		createee.setFont(b);
 		createee.setBounds(400, 350, 100, 50);
 		Back_to_LoginScren = new JButton("Back");
+		Back_to_LoginScren.setFont(b);
 		Back_to_LoginScren.setBounds(100, 350, 100, 50);
 		// CreatePanel jtextfield
 		FName = new JTextField();
@@ -156,7 +172,7 @@ public class Login extends JFrame {
 		CreareAccPanel.setBounds(600, 0, 600, 500);
 		CreareAccPanel.setVisible(true);
 		CreareAccPanel.setLayout(null);
-		CreareAccPanel.setBackground(java.awt.Color.red);
+		CreareAccPanel.setBackground(java.awt.Color.lightGray);
 		/////////////////////////////////////////////
 		 alertthatuserandpass = new JLabel("Username or Password wrong");
 		////////////////////////////////////////
@@ -186,6 +202,7 @@ public class Login extends JFrame {
 
 			remove(g);
 			repaint();
+			theconection();
 			forName.setText("");
 			forPassword.setText("");
 			 alertthatuserandpass.setText(" ");
@@ -335,7 +352,9 @@ public class Login extends JFrame {
 				alertthatuserandpass.setForeground(Color.red);
 				repaint();
 			}
-
+			rrr1.close();
+			stt.close();
+			
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -343,15 +362,18 @@ public class Login extends JFrame {
 		if (aa == 0) {
 			
 			next = new JButton("Next");
-			next.setBounds(400, 300, 100, 100);
-			
+			next.setBounds(552, 350, 100, 100);
+			Font  bItalic = new Font("Consolas", Font.BOLD, 18);
+			next.setFont(bItalic);
 			list = new CommandList(FirstName,LastName,id);
 			list.add(next);
-			list.setBounds(0, 0, 1200, 700);
+			list.setBounds(0, 0, 1115, 700);
+			setSize(1115,700);
 			add(list);
 			 gettingtherows();
 			remove(TheLogin);
 			remove(CreareAccPanel);
+			
 			repaint();
 
 			next.addActionListener(e -> {
@@ -362,17 +384,19 @@ public class Login extends JFrame {
 				g = new GUI(FirstName, LastName, id,maxcommands);
 
 				add(g);
-				backtologinscreen.setBounds(902, 500, 100, 100);
+				Font  b = new Font("Consolas", Font.BOLD, 14);
+				backtologinscreen.setBounds(967, 900, 100, 100);
+				backtologinscreen.setFont(b);
 				g.add(backtologinscreen);
 
 				Thread t1 = new Thread(new Runnable() {
 
 					@Override
 					public void run() {
-						int framewidth = 500;
-						int frameheigth = 600;
-						int framewidthp = 500;
-						int frameheigthp = 600;
+						int framewidth = 700;
+						int frameheigth = 1115;
+						int framewidthp = 700;
+						int frameheigthp = 1115;
 						for (int i = 0; i <= 1320; i++) {
 							try {
 								Thread.sleep(4);
@@ -410,10 +434,14 @@ public class Login extends JFrame {
 
 				t1.start();
 
-				remove(TheLogin);
-				remove(CreareAccPanel);
+				
 				repaint();
-
+try {
+	con.close();
+} catch (SQLException e1) {
+	// TODO Auto-generated catch block
+	e1.printStackTrace();
+}
 			});
 
 		}
@@ -442,6 +470,11 @@ public class Login extends JFrame {
 			if (r2.next()) {
 				bb = 0;
 			}
+			
+			st1.close();
+			r1.close();
+			st2.close();
+			r2.close();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -489,6 +522,7 @@ public class Login extends JFrame {
 	public void theconection() {
 		try {
 			con = DriverManager.getConnection(url, user, pass);
+			
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -511,7 +545,8 @@ public class Login extends JFrame {
 				
 			}
 			maxcommands=i;
-			
+			SS.close();
+			r1.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

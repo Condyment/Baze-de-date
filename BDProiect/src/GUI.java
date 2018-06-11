@@ -1,6 +1,7 @@
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,8 +29,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 public class GUI extends JPanel {
+
 	private ImageIcon icon;
 	private AddCommand AddComm;
+	TheLast thelastthing;
 	////////////////////////////////////////
 	private JPanel panel1;
 	private JPanel panel2;
@@ -72,7 +75,7 @@ public class GUI extends JPanel {
 	////////////////////////////////////
 	private int aa = 0;
 	///////////////////////
-	private String url = "jdbc:mysql://localhost:3306/cantina?autoReconnect=true&useSSL=false";
+	private String url = "jdbc:mysql://localhost:3306/cantina";
 	private String user = "root";
 	private String pass = "qq20021995qq";
 	private Connection con;
@@ -81,28 +84,34 @@ public class GUI extends JPanel {
 
 		setLayout(null);
 		theconection();
+		Font  bw = new Font("Consolas", Font.BOLD, 14);
 		this.FirstName = FirstName;
 		this.LastName = LastName;
 		this.id = id;
 		maxcommands1 = maxcommands;
+		thelastthing = new TheLast();
+
+		add(thelastthing);
+
 		add_image();
 		instance();
 		panels();
+
 		exit = new JButton("Exit");
-		exit.setBounds(902, 200, 100, 100);
-
-		addd = new JButton("Add");
-		addd.setBounds(902, 0, 100, 100);
-
-		remove = new JButton("Remove");
-		remove.setBounds(902, 100, 100, 100);
-
-		addcommand = new JButton("addcommand");
-		addcommand.setBounds(902, 300, 100, 100);
-
-		SeeCommand = new JButton("SeeCommand");
-		SeeCommand.setBounds(902, 400, 100, 100);
-
+		exit.setBounds(852, 900, 100, 100);
+exit.setFont(bw);
+		addd = new JButton("<html><center>Add<br>food</center></html>");
+		addd.setBounds(852, 0, 100, 100);
+		addd.setFont(bw);
+		remove = new JButton("<html><center>Remove<br>food</center></html>");
+		remove.setBounds(967, 0, 100, 100);
+		remove.setFont(bw);
+		addcommand = new JButton("<html><center>Add<br>command</center></html>");
+		addcommand.setBounds(852, 100, 100, 100);
+		addcommand.setFont(bw);
+		SeeCommand = new JButton("<html><center>Check<br>commands</center></html>");
+		SeeCommand.setBounds(967, 100, 100, 100);
+		SeeCommand.setFont(bw);
 		if (maxcommands1 >= 20) {
 			addcommand.setEnabled(false);
 		}
@@ -186,8 +195,11 @@ public class GUI extends JPanel {
 			} else {
 
 				AddComm = new AddCommand(FirstName, LastName, id);
-				JButton getbackfromaddcom = new JButton("Back to GUI");
-				getbackfromaddcom.setBounds(300, 400, 100, 100);
+				JButton getbackfromaddcom = new JButton("<html><center>Back to <br> GUI</center></html>");
+				getbackfromaddcom.setBounds(185, 125, 100, 75);
+				Font bItalic = new Font("Consolas", Font.BOLD, 15);
+				getbackfromaddcom.setFont(bItalic);
+
 				getbackfromaddcom.addActionListener(e1 -> {
 					remove(AddComm);
 					if (maxcommands1 >= 20) {
@@ -204,7 +216,7 @@ public class GUI extends JPanel {
 					addcommand.setEnabled(true);
 					addcommand.setEnabled(true);
 					SeeCommand.setEnabled(true);
-
+					repaint();
 				});
 				AddComm.add(getbackfromaddcom);
 				for (int i = 0; i < 25; i++) {
@@ -218,7 +230,7 @@ public class GUI extends JPanel {
 					}
 
 				}
-				AddComm.setBounds(0, 0, 700, 700);
+				AddComm.setBounds(790, 200, 380, 200);
 
 				add(AddComm);
 				add(panel1);
@@ -243,12 +255,15 @@ public class GUI extends JPanel {
 		});
 		SeeCommand.addActionListener(e -> {
 
-			backtogui = new JButton("Baack");
-			backtogui.setBounds(200, 0, 100, 100);
-
+			backtogui = new JButton("Back");
+			backtogui.setFont(bw);
+			backtogui.setBounds(552, 350, 100, 100);
+			Font  bItalic = new Font("Consolas", Font.BOLD, 18);
+			backtogui.setFont(bItalic);
+			remove(thelastthing);
 			list = new CommandList(FirstName, LastName, id);
-			list.setBounds(0, 0, 500, 500);
-			list.setBackground(Color.red);
+			list.setBounds(403, 200, 1115, 700);
+
 			list.add(backtogui);
 
 			backtogui.addActionListener(w -> {
@@ -261,11 +276,19 @@ public class GUI extends JPanel {
 				}
 				addd.setEnabled(true);
 				remove.setEnabled(true);
-				addcommand.setEnabled(true);
-				addcommand.setEnabled(true);
+				if (maxcommands1 >= 20) {
+					addcommand.setEnabled(false);
+				} else {
+
+					addcommand.setEnabled(true);
+				}
+
 				SeeCommand.setEnabled(true);
+				add(thelastthing);
 
 				remove(list);
+				add(panel1);
+				add(panel2);
 				repaint();
 			});
 
@@ -630,6 +653,7 @@ public class GUI extends JPanel {
 						addd.setEnabled(true);
 						remove.setEnabled(true);
 						addcommand.setEnabled(true);
+						SeeCommand.setEnabled(true);
 					}
 
 					repaint();
@@ -645,6 +669,8 @@ public class GUI extends JPanel {
 					addd.setEnabled(false);
 					remove.setEnabled(false);
 					addcommand.setEnabled(false);
+					SeeCommand.setEnabled(false);
+
 				}
 				repaint();
 

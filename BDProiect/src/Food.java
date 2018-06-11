@@ -1,3 +1,4 @@
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -24,9 +25,12 @@ private JPanel p;
 		this.Pret = Pret;
 		this.Denumire_articol = Denumire_articol;
 		this.nume_poza = nume_poza;
-		setText(this.Denumire_articol);
-		// icon = new ImageIcon(getClass().getResource(this.nume_poza));
-		// setIcon(icon);
+	
+		
+		setText("<html><center>" +this.Denumire_articol +"<br> "+ this.Pret+"Lei" +" </center></html>");
+		
+		Font  bItalic = new Font("Consolas", Font.BOLD, 18);
+		setFont(bItalic);
 		setBackground(java.awt.Color.white);
 
 		
@@ -62,7 +66,10 @@ private JPanel p;
 
 		buc_produs++;
 		sbuc_produs = "" + buc_produs;
-		setText(sbuc_produs + Denumire_articol);
+		
+		Font  bItalic = new Font("Consolas", Font.BOLD, 18);
+		setFont(bItalic);
+		setText("<html><center>" +this.Denumire_articol +"<br> "+ sbuc_produs +" buc"  +" </center></html>");
 	}
 
 	public int getbuc_produs() {
